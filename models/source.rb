@@ -13,15 +13,23 @@ class Source
   end
 
   def self.names
-    all.collect { |source| source.name }    
+    all.collect { |source| source.name }
   end
 
   def self.all
     all_raw_data.collect do |source_data|
-      new(name: source_data[:name], price: source_data[:price], 
+      new(name: source_data[:name], price: source_data[:price],
           affiliate: source_data[:affiliate], reseller: source_data[:reseller])
-    end    
+    end
   end
+
+  def cost_per_unit(quantity=0)
+    return 50 if reseller?
+    return affiliate_cost_per_unit(quantity) if affiliate?
+    return 100
+  end
+
+  private
 
   def self.all_raw_data
     [
@@ -34,23 +42,17 @@ class Source
     ]
   end
 
+  def affiliate_cost_per_unit(quantity)
+    return 40 if quantity > 1000
+    return 50 if quantity > 500
+    return 60
+  end
+
   def affiliate?
     affiliate
   end
 
   def reseller?
     reseller
-  end
-
-  def cost_per_unit(quantity)
-    return 50 if reseller?
-    return affiliate_cost_per_unit(quantity) if affiliate?
-    return 100
-  end
-
-  def affiliate_cost_per_unit(quantity)
-    return 40 if quantity > 1000
-    return 50 if quantity > 500
-    return 60      
   end
 end
