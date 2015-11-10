@@ -1,7 +1,25 @@
 Ruby billing system (non-persistent data)
 ==
 
+## Reporting
 
+Generating reports is simple:
+
+    report = Report.new
+    report.total_revenue
+    # => Gives the total revenue to the company for the reporting period
+
+    report.total_bill('ACompany')
+    # Gives the total bill for a specific revenue source, e.g. 'ACompany'
+    # Substitute in any other reseller or affiliate name in the argument
+
+    report.total_profit('ACompany')
+    # Gives the total profit for a specific revenue source, e.g. 'ACompany'
+    # Substitute in any other reseller or affiliate name in the argument
+
+There are a few other methods that can be used to generate useful data, but they are not part of the description/requirements so they are not documented here.
+
+At this time, there are no dates on orders, so the data being reported is based on 100 random orders. The code is easily setup to add reporting by date.
 
 ## Description / Requirements
 
