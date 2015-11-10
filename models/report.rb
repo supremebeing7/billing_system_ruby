@@ -4,18 +4,23 @@ class Report
   def initialize
     @orders = Order.last_month
   end
-  
+
   def total_revenue
     total = 0
     Source.all.each do |source|
-      total += total_cost_of_goods_sold_for_source(source)
+      total += total_billed_for_source(source)
     end
     total
   end
 
-  def total_cost_of_goods_sold_for_source(source)
+  def total_billed_for_source(source)
     quantity = total_quantity_sold(source)
     quantity * source.cost_per_unit(quantity)
+  end
+
+
+  def profit_for_source(source)
+    revenue_for_source(source) - total_billed_for_source(source)
   end
 
   def total_quantity_sold(source)
@@ -24,10 +29,6 @@ class Report
       quantity += order.quantity if order.source_name == source.name
     end
     quantity
-  end
-
-  def profit_for_source(source)
-    revenue_for_source(source) - total_cost_of_goods_sold_for_source(source)
   end
 
   def revenue_for_source(source)
