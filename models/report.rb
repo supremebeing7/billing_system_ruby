@@ -13,6 +13,16 @@ class Report
     total
   end
 
+  def total_bill(source_name)
+    return unless source = Source.find_by_name(source_name)
+    total_billed_for_source(source)
+  end
+
+  def total_profit(source_name)
+    return unless source = Source.find_by_name(source_name)
+    profit_for_source(source)
+  end
+
   def total_billed_for_source(source)
     quantity = total_quantity_sold(source)
     quantity * source.cost_per_unit(quantity)

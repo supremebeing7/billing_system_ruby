@@ -20,6 +20,26 @@ describe Report do
       end
     end
 
+    describe '#total_bill' do
+      it 'calculates total amount company should bill the affiliate or reseller named' do
+        # It receives this 101 times because it creates 100 orders each time
+        # this is run and for each order created it checks that the source is
+        # valid by attempting to find it by name
+        expect(Source).to receive(:find_by_name).and_return(source).exactly(101).times
+        expect(report).to receive(:total_billed_for_source).with(source)
+        report.total_bill('ACompany')
+      end
+    end
+
+    describe '#total_profit' do
+      it 'calculates total profit for the affiliate or reseller named' do
+        # See comment above for why this is received 101 times
+        expect(Source).to receive(:find_by_name).and_return(source).exactly(101).times
+        expect(report).to receive(:profit_for_source).with(source)
+        report.total_profit('ACompany')
+      end
+    end
+
     describe '#total_billed_for_source' do
       it 'calculates total cost for each source (quantity * cost per unit)' do
         allow(report).to receive(:total_quantity_sold).with(source).and_return(5)
