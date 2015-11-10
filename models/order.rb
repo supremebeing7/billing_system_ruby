@@ -1,5 +1,5 @@
 class Order
-  attr_accessor :quantity, :source_name
+  attr_accessor :quantity, :source_name, :amount_paid
 
   def initialize(attributes)
     raise InvalidSource unless source = Source.find_by_name(attributes[:source_name])
@@ -25,7 +25,6 @@ class Order
   def self.new_random_order
     quantity = rand(100)
     source = Source.all.sample
-    amount_paid = source.price * quantity
-    new(quantity: quantity, source_name: source.name, amount_paid: amount_paid)
+    new(quantity: quantity, source_name: source.name)
   end
 end
